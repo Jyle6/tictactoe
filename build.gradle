@@ -5,4 +5,4 @@ repositories {
 dependencies {
     implementation 'org.jline:jline:4.0.0'
 }
-sourceSets.main.java.srcDir("src/game")
+sourceSets.main.java.srcDir("src")
