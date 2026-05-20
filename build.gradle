@@ -6,3 +6,15 @@ dependencies {
     implementation 'org.jline:jline:4.0.0'
 }
 sourceSets.main.java.srcDir("src")
+jar {
+    archiveFileName = "tic-tac-toe.jar"
+    manifest {
+        attributes(
+                'Main-Class': 'Game'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
