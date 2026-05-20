@@ -1,7 +1,8 @@
 plugins { id 'java' }
-
+repositories {
+    mavenCentral()
+}
 dependencies {
     implementation 'org.jline:jline:4.0.0'
 }
-
 sourceSets.main.java.srcDir("src/game")
