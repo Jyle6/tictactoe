@@ -1,0 +1,16 @@
+param([string]$command)
+
+function Build-Jar {
+    .\gradlew.bat jar
+}
+
+function Run-Test {
+    java -jar build\libs\tic-tac-toe.jar
+}
+
+switch ($command) {
+    {"target" -eq $_ -or "" -eq $_} { Build-Jar }
+    {"test" -eq $_} { Run-Test }
+    {"fast" -eq $_} { Build-Jar; Run-Test }
+    default { Write-Host "Usage: ./build.ps1 {target|test|fast}" }
+}
