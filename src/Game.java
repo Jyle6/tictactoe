@@ -14,8 +14,27 @@ void main() throws IOException {
 		selected_human = !selected_human;
 		terminal.puts(Capability.cursor_address, start - 3, 0);
 		output.println("Play against: ");
-		terminal.writer().print(selected_human ? ">Human\n CPU" : " Human\n>CPU");
+		output.print(selected_human ? ">Human\n CPU" : " Human\n>CPU");
 		output.flush();
 	}
-	terminal.close();
+	boolean first = false;
+	if (!selected_human) {
+		output.print("Is CPU First? [y/n]");
+		output.flush();
+		first = input.read() == 'n';
+		terminal.puts(Capability.cursor_left);
+		terminal.puts(Capability.cursor_left);
+		terminal.puts(Capability.cursor_left);
+		terminal.puts(Capability.cursor_left);
+		terminal.puts(Capability.cursor_left)
+		output.print(first ? "no   " : "yes  ");
+		output.flush();
+	}
+	//output.println("Initializing Tic-Tac-Toe board...");
+	start = terminal.getHeight();
+	var board = new int[9]; // 2D arrays are expensive in terms of memory and performance and cannot be easily checked by CPU
+	while (true) {
+		//break;
+	}
+	//terminal.close();
 }
