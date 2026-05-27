@@ -1,36 +1,38 @@
+import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import static org.jline.utils.InfoCmp.Capability;
 
-void main() throws IOException {
-	var terminal = TerminalBuilder.terminal();
-	terminal.enterRawMode();
-	var input = terminal.input();
-	var output = terminal.writer();
-	var start = terminal.getHeight();
-	output.print("Play against:\n>Human\n CPU");
+Terminal terminal;
+InputStream input;
+PrintWriter output;
+int start;
+boolean first = false;
+
+boolean ask_yn(String prompt) throws IOException {
+	output.print(prompt + " [Y/n]");
 	output.flush();
-	boolean selected_human = true;
-	while (input.read() != '\r') {
-		selected_human = !selected_human;
-		terminal.puts(Capability.cursor_address, start - 3, 0);
-		output.println("Play against: ");
-		output.print(selected_human ? ">Human\n CPU" : " Human\n>CPU");
-		output.flush();
-	}
-	boolean first = false;
+	terminal.puts(Capability.cursor_left);
+	terminal.puts(Capability.cursor_left);
+	terminal.puts(Capability.cursor_left);
+	terminal.puts(Capability.cursor_left);
+	terminal.puts(Capability.cursor_left);
+	var is_no = input.read() == 'n';
+	output.print(is_no ? "no   " : "yes  ");
+	output.flush();
+	return is_no;
+}
+
+void main() throws IOException {
+	terminal = TerminalBuilder.terminal();
+	terminal.enterRawMode();
+	input = terminal.input();
+	output = terminal.writer();
+	start = terminal.getHeight();
+	boolean selected_human = ask_yn("Against a human?");
 	if (!selected_human) {
-		output.print("\nIs CPU First? [y/n]");
-		output.flush();
-		first = input.read() == 'n';
-		terminal.puts(Capability.cursor_left);
-		terminal.puts(Capability.cursor_left);
-		terminal.puts(Capability.cursor_left);
-		terminal.puts(Capability.cursor_left);
-		terminal.puts(Capability.cursor_left);
-		output.print(first ? "no   " : "yes  ");
-		output.flush();
+		first = ask_yn("\nIs CPU first?");
 	}
-	//output.println("Initializing Tic-Tac-Toe board...");
+	output.println("Initializing Tic-Tac-Toe board...");
 	start = terminal.getHeight();
 	var board = new int[9]; // 2D arrays are expensive in terms of memory and performance and cannot be easily checked by CPU
 	while (true) {
