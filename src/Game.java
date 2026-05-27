@@ -19,14 +19,14 @@ void main() throws IOException {
 	}
 	boolean first = false;
 	if (!selected_human) {
-		output.print("Is CPU First? [y/n]");
+		output.print("\nIs CPU First? [y/n]");
 		output.flush();
 		first = input.read() == 'n';
 		terminal.puts(Capability.cursor_left);
 		terminal.puts(Capability.cursor_left);
 		terminal.puts(Capability.cursor_left);
 		terminal.puts(Capability.cursor_left);
-		terminal.puts(Capability.cursor_left)
+		terminal.puts(Capability.cursor_left);
 		output.print(first ? "no   " : "yes  ");
 		output.flush();
 	}
