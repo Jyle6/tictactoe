@@ -31,28 +31,37 @@ void main() throws IOException {
 	output.print('\n');
 	while (true) {
 		printBoardState();
-		if (first && player == 'O') cpu();
-		else human();
+		if (first && player == 'O' ? cpu() : human()) {
+			terminal.puts(Capability.clear_screen);
+			output.println(player + " is the WINNER!!!");
+			output.flush();
+			break;
+		}
 		player = player == 'O' ? 'X' : 'O';
 		terminal.puts(Capability.clear_screen);
 	}
-	//terminal.close();
+	terminal.close();
 }
 
-private void human() throws IOException {
+boolean insert(char player, int idx) {
+	board[idx] = player;
+	return is_win(player);
+}
+
+boolean human() throws IOException {
 	while (true) {
 		var in = input.read() - '1';
-		if (in < 0 || in > 9 || board[in] == 'X' || board[in] == 'O') {
+		if (in < 0 || in > 8 || board[in] == 'X' || board[in] == 'O') {
 			output.print("\nillegal");
 			output.flush();
 			continue;
 		}
-		board[in] = player;
-		break;
+		return insert(player, in);
 	}
 }
 
-void cpu() throws IOException {
+boolean cpu() throws IOException {
+	return false;
 }
 
 void printBoardState() {
@@ -78,3 +87,5 @@ void init() throws IOException {
 	input = terminal.input();
 	output = terminal.writer();
 }
+
+boolean is_win(char player){return board[0]==player&&board[1]==player&&board[2]==player||board[3]==player&&board[4]==player&&board[5]==player||board[6]==player&&board[7]==player&&board[8]==player||board[0]==player&&board[3]==player&&board[6]==player||board[1]==player&&board[4]==player&&board[7]==player||board[2]==player&&board[5]==player&&board[8]==player||board[0]==player&&board[4]==player&&board[8]==player||board[2]==player&&board[4]==player&&board[6]==player;}
