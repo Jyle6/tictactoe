@@ -29,6 +29,7 @@ void main() throws IOException {
 	init();
 	configureGame();
 	output.print('\n');
+	int moves = 0;
 	while (true) {
 		printBoardState();
 		if (first && player == 'O' ? cpu() : human()) {
@@ -37,6 +38,13 @@ void main() throws IOException {
 			output.flush();
 			break;
 		}
+		if (moves >= 8) {
+			terminal.puts(Capability.clear_screen);
+			output.println("Ah, draw. Obviously! Who would let you win?");
+			output.flush();
+			break;
+		}
+		moves += 1;
 		player = player == 'O' ? 'X' : 'O';
 		terminal.puts(Capability.clear_screen);
 	}
@@ -60,8 +68,8 @@ boolean human() throws IOException {
 	}
 }
 
-boolean cpu() throws IOException {
-	return false;
+boolean cpu() {
+	return false; // WIP
 }
 
 void printBoardState() {
