@@ -7,19 +7,22 @@ InputStream input;
 PrintWriter output;
 int start;
 boolean first = false;
+// 2D arrays are expensive in terms of memory and performance and cannot be easily checked by CPU
+char[] board = "123456789".toCharArray();
+char player = 'O';
 
 boolean ask_yn(String prompt) throws IOException {
-	output.print(prompt + " [Y/n]");
+	output.print(prompt + " [y/n]");
 	output.flush();
 	terminal.puts(Capability.cursor_left);
 	terminal.puts(Capability.cursor_left);
 	terminal.puts(Capability.cursor_left);
 	terminal.puts(Capability.cursor_left);
 	terminal.puts(Capability.cursor_left);
-	var is_no = input.read() == 'n';
-	output.print(is_no ? "no   " : "yes  ");
+	var is_yes = input.read() == 'y';
+	output.print(is_yes ? "yes  " : "no   ");
 	output.flush();
-	return is_no;
+	return is_yes;
 }
 
 void main() throws IOException {
@@ -34,9 +37,25 @@ void main() throws IOException {
 	}
 	output.println("Initializing Tic-Tac-Toe board...");
 	start = terminal.getHeight();
-	var board = new int[9]; // 2D arrays are expensive in terms of memory and performance and cannot be easily checked by CPU
 	while (true) {
-		//break;
+		output.println(player + "'s turn!");
+		output.write(board, 0, 3);
+		output.print('\n');
+		output.write(board, 3, 3);
+		output.print('\n');
+		output.write(board, 6, 3);
+		output.flush();
+		if (first && player == 'O') {
+			// CPU
+		} else if (player == 'X' || selected_human) {
+			var in = input.read() - '1';
+			if ((in >= 1 && in <= 9) || board[in] == 'X' || board[in] == 'O') {
+				output.print("\nillegal move\n");
+				continue;
+			}
+			board[in] = player;
+		}
+		player = player == 'O' ? 'X' : 'O';
 	}
 	//terminal.close();
 }
